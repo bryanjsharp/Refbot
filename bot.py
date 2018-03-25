@@ -71,6 +71,25 @@ async def help(ctx):
 
     await ctx.send(embed=embed)
 
+@bot.command()
+async def poop(ctx):
+    await ctx.send("https://i.kinja-img.com/gawker-media/image/upload/s--eg2Q6azC--/c_scale,fl_progressive,q_80,w_800/183ob861iy0ckjpg.jpg")
+
+
+@bot.event
+async def on_message(message):
+    if "3" in  message.content.split():
+        await message.add_reaction("\U0001f514")
+        await message.channel.send("THREE!!!!")
+    #lets the commands continue working
+    await bot.process_commands(message)
+
+
+
+
+
+
+
 token_filename = "token.txt"
 token_file = open(token_filename, "r")
 for line in token_file:
