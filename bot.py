@@ -84,6 +84,33 @@ async def on_message(message):
     #lets the commands continue working
     await bot.process_commands(message)
 
+#Checks for changes in Members' voice states and logs it in the 'log' channel
+@bot.event
+async def on_voice_state_update(member, before, after):
+    if after.channel != before.channel:
+        for channel in bot.get_all_channels():
+            if channel.name == "log":
+                if before.channel != None:
+                    await channel.send(member.name + " left " + before.channel.name)
+                if after.channel != None:
+                    await channel.send(member.name + " joined " + after.channel.name)
+
+    if before.self_mute != after.self_mute:
+        for channel in bot.get_all_channels():
+            if channel.name == "log":
+                if after.self_mute:
+                    await channel.send(member.name + " has muted")
+                if not after.self_mute:
+                    await channel.send(member.name + " has unmuted")
+
+    if before.self_deaf != after.self_deaf:
+        for channel in bot.get_all_channels():
+            if channel.name == "log":
+                if after.self_deaf:
+                    await channel.send(member.name + " has deafened")
+                if not after.self_deaf:
+                    await channel.send(member.name + " has deafened")
+
 
 
 
