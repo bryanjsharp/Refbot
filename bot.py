@@ -1,7 +1,9 @@
 import discord
 import random
 import string
+import requests
 from discord.ext import commands
+from pprint import pprint
 
 bot = commands.Bot(command_prefix='$')
 
@@ -74,6 +76,13 @@ async def help(ctx):
     embed.add_field(name="$roll NdN", value="Rolls dice", inline=False)
 
     await ctx.send(embed=embed)
+
+@bot.command()
+async def simps(ctx):
+    url = "https://frinkiac.com/api/random"
+    r = requests.get(url, verify=True)
+    dic = r.json()
+    await ctx.send("https://frinkiac.com/img/"+dic["Frame"]["Episode"]+"/"+str(dic["Frame"]["Timestamp"])+".jpg")
 
 @bot.command()
 async def poop(ctx):
