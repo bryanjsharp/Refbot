@@ -1,3 +1,5 @@
+#Refbot
+
 import discord
 import random
 import string
@@ -78,11 +80,18 @@ async def help(ctx):
     await ctx.send(embed=embed)
 
 @bot.command()
-async def simps(ctx):
+async def simpsons(ctx):
     url = "https://frinkiac.com/api/random"
     r = requests.get(url, verify=True)
     dic = r.json()
     await ctx.send("https://frinkiac.com/img/"+dic["Frame"]["Episode"]+"/"+str(dic["Frame"]["Timestamp"])+".jpg")
+
+@bot.command()
+async def futurama(ctx):
+    url = "https://morbotron.com/api/random"
+    r = requests.get(url, verify=True)
+    dic = r.json()
+    await ctx.send("https://morbotron.com/img/"+dic["Frame"]["Episode"]+"/"+str(dic["Frame"]["Timestamp"])+".jpg")
 
 @bot.command()
 async def poop(ctx):
