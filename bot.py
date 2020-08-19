@@ -1,7 +1,11 @@
+#Refbot
+
 import discord
 import random
 import string
+import requests
 from discord.ext import commands
+from pprint import pprint
 
 bot = commands.Bot(command_prefix='$')
 
@@ -39,7 +43,10 @@ async def roll(ctx, dice : str):
         return
 
     result = ', '.join(str(random.randint(1, limit)) for r in range(rolls))
-    await ctx.send(result)
+    if "3" in result.split():
+        await ctx.send("THREE!!!!")
+    else:
+    	await ctx.send(result)
 
 @bot.command()
 async def info(ctx):
@@ -68,8 +75,23 @@ async def help(ctx):
     embed.add_field(name="$cat", value="Gives a cute cat gif to lighten up the mood.", inline=False)
     embed.add_field(name="$info", value="Gives a little info about the bot", inline=False)
     embed.add_field(name="$help", value="Gives this message", inline=False)
+    embed.add_field(name="$roll NdN", value="Rolls dice", inline=False)
 
     await ctx.send(embed=embed)
+
+@bot.command()
+async def simpsons(ctx):
+    url = "https://frinkiac.com/api/random"
+    r = requests.get(url, verify=True)
+    dic = r.json()
+    await ctx.send("https://frinkiac.com/img/"+dic["Frame"]["Episode"]+"/"+str(dic["Frame"]["Timestamp"])+".jpg")
+
+@bot.command()
+async def futurama(ctx):
+    url = "https://morbotron.com/api/random"
+    r = requests.get(url, verify=True)
+    dic = r.json()
+    await ctx.send("https://morbotron.com/img/"+dic["Frame"]["Episode"]+"/"+str(dic["Frame"]["Timestamp"])+".jpg")
 
 @bot.command()
 async def poop(ctx):
@@ -78,9 +100,12 @@ async def poop(ctx):
 
 @bot.event
 async def on_message(message):
-    if "3" in  message.content.split():
-        await message.add_reaction("\U0001f514")
-        await message.channel.send("THREE!!!!")
+    words = message.content.split(" ")
+    if "I'm" in words[0]:
+    	if any(word in words[1] for word in ("cold", "tired", "hungry", "bored")):
+            await message.channel.send("You're " + words[1] +"!?! Feel THESE nipples!")
+
+
     #lets the commands continue working
     await bot.process_commands(message)
 
